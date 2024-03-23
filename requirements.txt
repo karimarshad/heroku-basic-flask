@@ -1,2 +1,7 @@
 Flask
 gunicorn
+request
+jsonify
+re
+CORS
+render_template

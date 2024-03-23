@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elixir - Rule Engine Testing</title>
+    <link rel="stylesheet" href="http://stash.compjour.org/assets/css/foundation.css">
+</head>
+<body>
+    <h1>Elixir - Rule Engine Testing</h1>
+    <form id="apiForm">
+        <label for="lpValue">LP Value:</label>
+        <input type="text" id="lpValue" name="lpValue"><br><br>
+
+        <label for="carotidUsgResult">Carotid USG Result:</label><br>
+        <input type="radio" id="carotidUsgResultTrue" name="carotidUsgResult" value="true">
+        <label for="carotidUsgResultTrue">True</label><br>
+        <input type="radio" id="carotidUsgResultFalse" name="carotidUsgResult" value="false">
+        <label for="carotidUsgResultFalse">False</label><br><br>
+
+        <label for="fhgTestResult">FHG Test Result:</label><br>
+        <input type="radio" id="fhgTestResultTrue" name="fhgTestResult" value="true">
+        <label for="fhgTestResultTrue">True</label><br>
+        <input type="radio" id="fhgTestResultFalse" name="fhgTestResult" value="false">
+        <label for="fhgTestResultFalse">False</label><br><br>
+
+        <label for="cacScore">CAC Score:</label>
+        <input type="text" id="cacScore" name="cacScore"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById("apiForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Get input values
+            const lpValue = document.getElementById("lpValue").value;
+            const carotidUsgResult = document.querySelector('input[name="carotidUsgResult"]:checked').value;
+            const fhgTestResult = document.querySelector('input[name="fhgTestResult"]:checked').value;
+            const cacScore = document.getElementById("cacScore").value;
+
+            // Define the URL
+            const url = 'http://localhost:5000/recommendations';
+            
+            // Define the query parameters
+            const params = {
+                lp_value: lpValue,
+                carotid_usg_result: carotidUsgResult,
+                fhg_test_result: fhgTestResult,
+                cac_score: cacScore
+            };
+
+            // Function to encode URL parameters
+            const encodeParams = (params) => {
+                const encodedParams = [];
+                for (let key in params) {
+                    encodedParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
+                }
+                return encodedParams.join('&');
+            };
+
+            // Send a GET request with the query parameters
+            fetch(`${url}?${encodeParams(params)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response from Flask API:', data);
+                    // Display response on the page
+                    document.getElementById('response').innerHTML = JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
