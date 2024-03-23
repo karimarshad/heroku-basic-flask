@@ -21,10 +21,10 @@
 from flask import Flask, render_template, request, jsonify
 import json
 import re
-from flask_cors import CORS
+#from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 
 def extract_numerical_value(conclusion):
     """Extracts numerical value from conclusion string."""
