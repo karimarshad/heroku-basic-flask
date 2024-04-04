@@ -3,4 +3,3 @@ jsonify
 CORS
 gunicorn==20.1.0
 flask_cors
-re
