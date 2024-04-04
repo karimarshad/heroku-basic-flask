@@ -24,7 +24,8 @@ import re
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
+CORS(app, origins='*')
 
 def extract_numerical_value(conclusion):
     """Extracts numerical value from conclusion string."""
