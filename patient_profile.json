@@ -1,0 +1,189 @@
+{
+    "resourceType": "Bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "resource": {
+          "resourceType": "Patient",
+          "id": "example-patient",
+          "identifier": [
+            {
+              "system": "http://example.org/patient",
+              "value": "12345"
+            }
+          ],
+          "name": [
+            {
+              "use": "official",
+              "family": "Doe",
+              "given": ["John"]
+            }
+          ],
+          "gender": "male",
+          "birthDate": "1970-01-01"
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "FamilyMemberHistory",
+          "id": "example-family-history",
+          "patient": {
+            "reference": "Patient/example-patient"
+          },
+          "status": "completed",
+          "relationship": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          },
+          "condition": [
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "22298006",
+                    "display": "Stroke"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "example-carotid-usg",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                  "code": "US",
+                  "display": "Ultrasound"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "45072-7",
+                "display": "Carotid arteries Duplex Ultrasound"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/example-patient"
+          },
+          "conclusion": "The carotid ultrasound shows mild plaque buildup."
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "example-lpa",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                  "code": "LAB",
+                  "display": "Laboratory"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "17856-6",
+                "display": "Lipoprotein (a) [Mass/volume] in Serum or Plasma"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/example-patient"
+          },
+          "conclusion": "The Lp(a) test result is 100 mg/dL."
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "example-coronary-usg",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                  "code": "US",
+                  "display": "Ultrasound"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "30049-7",
+                "display": "Coronary Artery Calcium Score"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/example-patient"
+          },
+          "conclusion": "The aggregate CAC Score is 5."
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "example-fh",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                  "code": "LAB",
+                  "display": "Laboratory"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "48065-7",
+                "display": "Familial hypercholesterolemia genetic testing"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/example-patient"
+          },
+          "conclusion": "The genetic test indicates no familial hypercholesterolemia."
+        }
+      }
+    ],
+    "total_chol": 280,
+    "hdl_chol": 200,
+    "systolic_bp": 135,
+    "is_smoker": true,
+    "diabetes": false,
+    "race":"White"
+  }
+  
