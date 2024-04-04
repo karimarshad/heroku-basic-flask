@@ -18,7 +18,7 @@
 
 ##############################################
 ###
-from flask import Flask, render_template, request, jsonify, CORS
+from flask import Flask, render_template, request, jsonify
 import json
 import re
 from flask_cors import CORS
