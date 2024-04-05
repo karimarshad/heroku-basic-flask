@@ -3,8 +3,9 @@ import math
 
 def calculate_framingham_score(gender, age, total_chol, is_smoker, hdl_chol, systolic_bp, treated=False):
     # Age points
-    age_points = 0 
-    age = int(age)
+    #age_points = 0 
+    #age = int(age)
+    print(gender,age,total_chol,is_smoker,hdl_chol,systolic_bp,treated)
     if gender == 'female':
         if 20 <= age <= 34:
             age_points = -7
@@ -49,7 +50,7 @@ def calculate_framingham_score(gender, age, total_chol, is_smoker, hdl_chol, sys
             age_points = 13
 
     # Total Cholesterol points
-    total_chol_points = 0
+    #total_chol_points = 0
     if gender == 'female':
         if age < 40:
             if total_chol < 160:
@@ -164,7 +165,7 @@ def calculate_framingham_score(gender, age, total_chol, is_smoker, hdl_chol, sys
                 total_chol_points = 1
 
     # Smoking points
-    smoking_points = 0
+    #smoking_points = 0
     if is_smoker:
         if gender == 'female':
             if 20 <= age < 40:
@@ -192,7 +193,7 @@ def calculate_framingham_score(gender, age, total_chol, is_smoker, hdl_chol, sys
         smoking_points = 0
 
     # HDL cholesterol points
-    hdl_chol = int(hdl_chol)
+    #hdl_chol = int(hdl_chol)
     if hdl_chol >= 60:
         hdl_chol_points = -1
     elif 50 <= hdl_chol <= 59:

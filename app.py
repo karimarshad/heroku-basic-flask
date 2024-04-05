@@ -1,23 +1,3 @@
-#from flask import Flask
-#from datetime import datetime
-#app = Flask(__name__)
-
-#@app.route('/')
-#def homepage():
-#    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-
-#    return """
-#    <h1>Hello heroku</h1>
-#    <p>It is currently {time}.</p>#
-
-#    <img src="http://loremflickr.com/600/400" />
-#    """.format(time=the_time)
-
-#if __name__ == '__main__':
-#    app.run(debug=True, use_reloader=True)
-
-##############################################
-###
 from flask import Flask, render_template, request, jsonify
 import json
 import re
@@ -167,20 +147,27 @@ def get_recommendations():
         carotid_usg_result = request.args.get('carotid_usg_result', '') == 'true'
         fhg_test_result = request.args.get('fhg_test_result', '') == 'true'
         cac_score = float(request.args.get('cac_score', 0))
-        age = request.args.get('age',0)
-        total_chol = request.args.get('total_chol',0)
+        age = int(request.args.get('age',0))
+        gender= request.args.get('gender',"male")
+        total_chol = int(request.args.get('total_chol',0))
         is_smoker = request.args.get('is_smoker',0)
-        hdl_chol = request.args.get('hdl_chol',0)
-        systolic_bp = request.args.get('systolic_bp',0)
+        hdl_chol = int(request.args.get('hdl_chol',0))
+        systolic_bp = int(request.args.get('systolic_bp',0))
         treated = request.args.get('treated',0)
+       
         #calculate framingham scoring
-        frg_score, frg_risk_percentage = calculate_framingham_score(age,total_chol,is_smoker,hdl_chol,systolic_bp,treated)
+        frg_score, frg_risk_percentage = calculate_framingham_score(gender,age,total_chol,is_smoker,hdl_chol,systolic_bp,treated)
         
 
-        # Generate recommendations
+        # Generate Coronary recommendations
         cad_reco = cad_recommendations(cac_score, carotid_usg_result, fhg_test_result, lp_value)
-        recommendations = cad_reco + [f"Framingham Score: {frg_score}", f"Framingham Risk %: {frg_risk_percentage}%"]
+        
+        #Combine Framingham Scoring to the recommendations
+        recommendations = cad_reco + [f"Framingham Score: {frg_score}", f"Framingham Risk %: {frg_risk_percentage}"]
+        
+        # Return the recommendation Summary to client
         return jsonify({"recommendations": recommendations})
+    
         #return jsonify({"message": "GET method is not supported for this endpoint"})
 
 @app.route('/')
