@@ -29,19 +29,6 @@
 
         <input type="submit" value="Submit">
     </form>
-    <!--//Added Reco table start-->
-    <h2>Recommendations Table</h2>
-    <table>
-     <thead>
-        <tr>
-            <th>Recommendation</th>
-        </tr>
-     </thead>
-      <tbody id="recommendationsBody">
-         <!-- Table body will be populated dynamically -->
-      </tbody>
-    </table>
- <!--//Added Reco table end-->
 
     <div id="response"></div>
 
@@ -87,23 +74,24 @@
                 .then(data => {
                     console.log('Response from Flask API:', data);
                     // Display response on the page
-                    document.getElementById('response').innerHTML = JSON.stringify(data);
-                    //const responseDiv = document.getElementById('response');
+                    const responseDiv = document.getElementById('response');
                     responseDiv.innerHTML = ''; // Clear previous content
-                    for (let key in data) {
-                        const p = document.createElement('p');
-                        p.textContent = `${key}: ${data[key]}`;
-                        responseDiv.appendChild(p);
-                }
-                function populateTable(jsonData) {
-                    var tableBody = document.getElementById("recommendationsBody");
-                    jsonData.recommendations.forEach(function(recommendation) {
-                    var row = tableBody.insertRow();
-                    var cell = row.insertCell();
-                    cell.textContent = recommendation;
-                    });}
-                    populateTable(data);      
-            })
+
+                    // Parse recommendations if available
+                    const recommendations = data.recommendations;
+                    if (recommendations && recommendations.length > 0) {
+                        const recommendationList = recommendations[0].split(',').map(recommendation => recommendation.trim());
+                        const ul = document.createElement('ul');
+                        recommendationList.forEach(recommendation => {
+                            const li = document.createElement('li');
+                            li.textContent = recommendation;
+                            ul.appendChild(li);
+                        });
+                        responseDiv.appendChild(ul);
+                    } else {
+                        responseDiv.textContent = 'No recommendations available';
+                    }
+                })
                 .catch(error => {
                     console.error('Error:', error);
                 });
