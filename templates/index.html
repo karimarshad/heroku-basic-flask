@@ -9,39 +9,45 @@
 <body>
     <h1>Elixir - Rule Engine Testing</h1>
     <form id="apiForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age"><br><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+        <label for="totalCholesterol">Total Cholesterol:</label>
+        <input type="number" id="totalCholesterol" name="totalCholesterol"><br><br>
+        <label for="hdlCholesterol">HDL Cholesterol:</label>
+        <input type="number" id="hdlCholesterol" name="hdlCholesterol"><br><br>
+        <label for="systolicBP">Systolic Blood Pressure:</label>
+        <input type="number" id="systolicBP" name="systolicBP"><br><br>
+        <label for="isSmoker">Smoker:</label>
+        <select id="isSmoker" name="isSmoker">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br><br>
+        <label for="isTreated">Treated:</label>
+        <select id="isTreated" name="isTreated">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br><br>
         <label for="lpValue">LP Value:</label>
         <input type="text" id="lpValue" name="lpValue"><br><br>
-
         <label for="carotidUsgResult">Carotid USG Result:</label><br>
         <input type="radio" id="carotidUsgResultTrue" name="carotidUsgResult" value="true">
         <label for="carotidUsgResultTrue">True</label><br>
         <input type="radio" id="carotidUsgResultFalse" name="carotidUsgResult" value="false">
         <label for="carotidUsgResultFalse">False</label><br><br>
-
         <label for="fhgTestResult">FHG Test Result:</label><br>
         <input type="radio" id="fhgTestResultTrue" name="fhgTestResult" value="true">
         <label for="fhgTestResultTrue">True</label><br>
         <input type="radio" id="fhgTestResultFalse" name="fhgTestResult" value="false">
         <label for="fhgTestResultFalse">False</label><br><br>
-
         <label for="cacScore">CAC Score:</label>
         <input type="text" id="cacScore" name="cacScore"><br><br>
-
         <input type="submit" value="Submit">
     </form>
-    <!--//Added Reco table start-->
-    <h2>Recommendations Table</h2>
-    <table>
-     <thead>
-        <tr>
-            <th>Recommendation</th>
-        </tr>
-     </thead>
-      <tbody id="recommendationsBody">
-         <!-- Table body will be populated dynamically -->
-      </tbody>
-    </table>
- <!--//Added Reco table end-->
 
     <div id="response"></div>
 
@@ -54,17 +60,32 @@
             const carotidUsgResult = document.querySelector('input[name="carotidUsgResult"]:checked').value;
             const fhgTestResult = document.querySelector('input[name="fhgTestResult"]:checked').value;
             const cacScore = document.getElementById("cacScore").value;
+            const age = document.getElementById("age").value;
+            const gender = document.getElementById("gender").value;
+            const total_chol= document.getElementById("totalCholesterol").value;
+            const hdl_chol= document.getElementById("hdlCholesterol").value;
+            const systolic_bp = document.getElementById("systolicBP").value;
+            const isSmoker = document.getElementById("isSmoker").value;
+            const isTreated = document.getElementById("isTreated").value;
+          
 
             // Define the URL
-            //const url = 'http://localhost:5000/recommendations';
-            const url = 'https://elixir-demo-x7rf.onrender.com/recommendations';
+            const url = 'http://localhost:5000/recommendations';
+            //const url = 'https://elixir-demo-x7rf.onrender.com/recommendations';
             
             // Define the query parameters
             const params = {
                 lp_value: lpValue,
                 carotid_usg_result: carotidUsgResult,
                 fhg_test_result: fhgTestResult,
-                cac_score: cacScore
+                cac_score: cacScore,
+                age:age,
+                gender:gender,
+                total_chol:total_chol,
+                hdl_chol:hdl_chol,
+                systolic_bp:systolic_bp,
+                isSmoker:isSmoker,
+                isTreated:isTreated
             };
 
             // Function to encode URL parameters
@@ -87,23 +108,28 @@
                 .then(data => {
                     console.log('Response from Flask API:', data);
                     // Display response on the page
-                    document.getElementById('response').innerHTML = JSON.stringify(data);
-                    //const responseDiv = document.getElementById('response');
+                    const responseDiv = document.getElementById('response');
                     responseDiv.innerHTML = ''; // Clear previous content
-                    for (let key in data) {
-                        const p = document.createElement('p');
-                        p.textContent = `${key}: ${data[key]}`;
-                        responseDiv.appendChild(p);
-                }
-                function populateTable(jsonData) {
-                    var tableBody = document.getElementById("recommendationsBody");
-                    jsonData.recommendations.forEach(function(recommendation) {
-                    var row = tableBody.insertRow();
-                    var cell = row.insertCell();
-                    cell.textContent = recommendation;
-                    });}
-                    populateTable(data);      
-            })
+
+                    // Parse recommendations if available
+                    const recommendations = data.recommendations;
+                    if (recommendations && recommendations.length > 0) {
+                        const ul = document.createElement('ul');
+                        recommendations.forEach(recommendation => {
+                        // Split each recommendation by comma and trim whitespace
+                        const recommendationList = recommendation.split(',').map(item => item.trim());
+                        // Create a list item for each recommendation
+                        recommendationList.forEach(recommendationItem => {
+                            const li = document.createElement('li');
+                                li.textContent = recommendationItem;
+                        ul.appendChild(li);
+                        });
+                    });
+                responseDiv.appendChild(ul);
+            } else {
+                        responseDiv.textContent = 'No recommendations available';
+                    }
+                })
                 .catch(error => {
                     console.error('Error:', error);
                 });

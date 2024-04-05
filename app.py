@@ -22,6 +22,7 @@ from flask import Flask, render_template, request, jsonify
 import json
 import re
 from flask_cors import CORS
+from riskscore import calculate_framingham_score
 
 app = Flask(__name__)
 #CORS(app)
@@ -166,9 +167,19 @@ def get_recommendations():
         carotid_usg_result = request.args.get('carotid_usg_result', '') == 'true'
         fhg_test_result = request.args.get('fhg_test_result', '') == 'true'
         cac_score = float(request.args.get('cac_score', 0))
+        age = request.args.get('age',0)
+        total_chol = request.args.get('total_chol',0)
+        is_smoker = request.args.get('is_smoker',0)
+        hdl_chol = request.args.get('hdl_chol',0)
+        systolic_bp = request.args.get('systolic_bp',0)
+        treated = request.args.get('treated',0)
+        #calculate framingham scoring
+        frg_score, frg_risk_percentage = calculate_framingham_score(age,total_chol,is_smoker,hdl_chol,systolic_bp,treated)
         
+
         # Generate recommendations
-        recommendations = cad_recommendations(cac_score, carotid_usg_result, fhg_test_result, lp_value)
+        cad_reco = cad_recommendations(cac_score, carotid_usg_result, fhg_test_result, lp_value)
+        recommendations = cad_reco + [f"Framingham Score: {frg_score}", f"Framingham Risk %: {frg_risk_percentage}%"]
         return jsonify({"recommendations": recommendations})
         #return jsonify({"message": "GET method is not supported for this endpoint"})
 
