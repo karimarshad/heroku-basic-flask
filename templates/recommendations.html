@@ -117,7 +117,7 @@
                         const ul = document.createElement('ul');
                         recommendations.forEach(recommendation => {
                         // Split each recommendation by comma and trim whitespace
-                        const recommendationList = recommendation.split(',').map(item => item.trim());
+                        const recommendationList = recommendation.split(';').map(item => item.trim());
                         // Create a list item for each recommendation
                         recommendationList.forEach(recommendationItem => {
                             const li = document.createElement('li');

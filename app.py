@@ -3,6 +3,12 @@ import json
 import re
 from flask_cors import CORS
 from riskscore import calculate_framingham_score
+from global_vars import onea_message, oneb_message, onec_message, oned_message, onee_message, onef_message, oneg_message
+from global_vars import twoa_message, twob_message, twoc_message, twod_message, twoe_message, twof_message, twog_message
+from global_vars import threea_message, threeb_message, threec_message, threed_message, threee_message, threef_message, threeg_message
+from global_vars import foura_message, fourb_message, fourc_message, fourd_message, foure_message, fourf_message, fourg_message
+from global_vars import fivea_message, fiveb_message, fivec_message, fived_message, fivee_message, fivef_message, fiveg_message
+from global_vars import sixa_message, sixb_message, sixc_message, sixd_message, sixe_message, sixf_message, sixg_message
 
 app = Flask(__name__)
 #CORS(app)
@@ -45,83 +51,84 @@ def cad_recommendations(cac_score, carotid_usg_result, fhg_test_result, lp_value
     recommendations = []
     if cac_score == 0:
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #1b
-            recommendations.append("Cascade Screening, FHF, General Cardiologist")
+            #recommendations.append("Cascade Screening, FHF, General Cardiologist")
+            recommendations.append(oneb_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #1c
-            recommendations.append("Cascade Screening, FHF, General Cardiologist, and Genetic Screening")
+            recommendations.append(onec_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #1d
-            recommendations.append("Cascade Screening, FHF, General Cardiologist, and Genetic Screening")
+            recommendations.append(oned_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #1e
-            recommendations.append("Cascade Screening, FHF, General Cardiologist")
+            recommendations.append(onee_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #1f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist")
+            recommendations.append(onef_message)
         else:
-            recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist(rec 1a or 1g)")
+            recommendations.append(oneg_message) #add code for onea_message
     elif ( 0 < cac_score < 10):
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #2b
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 2b")
+            recommendations.append(twob_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #2c
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 2c")
+            recommendations.append(twoc_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #2d
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 2d")
+            recommendations.append(twod_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #2e
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 2e")
+            recommendations.append(twoe_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #2f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist 2f")
+            recommendations.append(twof_message)
         else:
-            recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist(rec 2a or 2g)")    
+            recommendations.append(twog_message)    
     elif (10 < cac_score < 100):
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #3b
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 3b")
+            recommendations.append(threeb_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #3c
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 3c")
+            recommendations.append(threec_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #3d
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 3d")
+            recommendations.append(threed_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #3e
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 3e")
+            recommendations.append(threee_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #3f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist 3f")
+            recommendations.append(threef_message)
         else:
             recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist(rec 3a or 3g)") 
     elif (99 < cac_score < 400):
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #4b
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 4b")
+            recommendations.append(fourb_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #4c
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 4c")
+            recommendations.append(fourc_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #4d
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 4d")
+            recommendations.append(fourd_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #4e
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 4e")
+            recommendations.append(foure_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #4f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist 4f")
+            recommendations.append(fourf_message)
         else:
-            recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist(rec 5a or 5g)") 
+            recommendations.append(fourg_message) 
     elif (399 < cac_score < 1000):
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #5b
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 5b")
+            recommendations.append(fiveb_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #5c
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 5c")
+            recommendations.append(fivec_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #5d
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 5d")
+            recommendations.append(fived_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #5e
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 5e")
+            recommendations.append(fivee_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #5f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist 5f")
+            recommendations.append(fivef_message)
         else:
-            recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist(rec 5a or 5g)") 
+            recommendations.append(fiveg_message) 
     elif (cac_score > 999):
         if carotid_usg_result and not fhg_test_result and lp_value > 75: #6b
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 6b")
+            recommendations.append(sixb_message)
         elif carotid_usg_result and fhg_test_result and lp_value >75: #6c
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 6c")
+            recommendations.append(sixc_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #6d
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist, and Genetic Screening 6d")
+            recommendations.append(sixd_message)
         elif not carotid_usg_result and not fhg_test_result and lp_value >75: #6e
-            recommendations.append("Aspirin, Cascade Screening, FHF, General Cardiologist 6e")
+            recommendations.append(sixe_message)
         elif carotid_usg_result and fhg_test_result and lp_value <75: #6f
-            recommendations.append("Cascade Screening, FHF, General Cardiologist 6f")            
+            recommendations.append(sixf_message)            
     # Add other score ranges similarly
     else:
-        recommendations.append("Lipid Lowering Therapy, Exercise Medicine and Nutritionist")
+        recommendations.append(sixg_message)
 
     return recommendations
 
@@ -163,7 +170,7 @@ def get_recommendations():
         cad_reco = cad_recommendations(cac_score, carotid_usg_result, fhg_test_result, lp_value)
         
         #Combine Framingham Scoring to the recommendations
-        recommendations = cad_reco + [f"Framingham Score: {frg_score}", f"Framingham Risk %: {frg_risk_percentage}"]
+        recommendations = cad_reco + [f"Your Framingham Score is: {frg_score}", f"The % risk of having a cardiovascular disease in next 10 years is: {frg_risk_percentage}"]
         
         # Return the recommendation Summary to client
         return jsonify({"recommendations": recommendations})
